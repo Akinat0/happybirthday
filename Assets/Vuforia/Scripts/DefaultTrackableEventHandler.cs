@@ -72,6 +72,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         }
     }
 
+
     #endregion // PUBLIC_METHODS
 
     #region PROTECTED_METHODS
@@ -81,6 +82,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         var rendererComponents = GetComponentsInChildren<Renderer>(true);
         var colliderComponents = GetComponentsInChildren<Collider>(true);
         var canvasComponents = GetComponentsInChildren<Canvas>(true);
+        var behaviours = GetComponentsInChildren<Beh>(true);
 
         // Enable rendering:
         foreach (var component in rendererComponents)
@@ -93,14 +95,20 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         // Enable canvas':
         foreach (var component in canvasComponents)
             component.enabled = true;
+
+        // Send that components are active to state machine
+        foreach (var component in behaviours) {
+            component.activate();
+        }
     }
 
-
+    bool first = true;
     protected virtual void OnTrackingLost()
     {
         var rendererComponents = GetComponentsInChildren<Renderer>(true);
         var colliderComponents = GetComponentsInChildren<Collider>(true);
         var canvasComponents = GetComponentsInChildren<Canvas>(true);
+        var behaviours = GetComponentsInChildren<Beh>(true);
 
         // Disable rendering:
         foreach (var component in rendererComponents)
@@ -110,9 +118,21 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         foreach (var component in colliderComponents)
             component.enabled = false;
 
+        
         // Disable canvas':
         foreach (var component in canvasComponents)
             component.enabled = false;
+        
+
+        // Send that components are active to state machine
+        foreach (var component in behaviours)
+        {
+            if (!first)
+            {
+                component.deactivate();
+            }
+            first = false;
+        }
     }
 
     #endregion // PROTECTED_METHODS

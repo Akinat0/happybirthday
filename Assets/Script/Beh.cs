@@ -16,13 +16,23 @@ public class Beh : MonoBehaviour
         if (stateMachine != null) print("I found state machine");
 
     }
+
+    public void activate() {
+        stateMachine.addTracked();
+    }
+
+    public void deactivate() {
+        stateMachine.removeTracked();
+    }
+
+
     private void OnEnable()
     {
-        stateMachine.addTracker();
+
     }
 
     private void OnDisable()
     {
-        stateMachine.removeTracker();
+
     }
 }
