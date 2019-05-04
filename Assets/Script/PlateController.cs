@@ -13,9 +13,16 @@ public class PlateController : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start() {
+    public void OnEnable() {
+        Debug.Log("OnEnable");
         foreach (var g in plates) g.SetActive(false);
         plates[0].SetActive(true);
+    }
+
+    public void OnDisable()
+    {
+        Debug.Log("OnDisable");
+        index = 0;
     }
 
     // Update is called once per frame
@@ -33,4 +40,6 @@ public class PlateController : MonoBehaviour {
         index++;
         plates[index].SetActive(true);
     }
+
+
 }
